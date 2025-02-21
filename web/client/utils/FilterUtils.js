@@ -512,6 +512,10 @@ export const processOGCFilterFields = function(group, objFilter, nsplaceholder) 
                 break;
             case "string":
                 fieldFilter = ogcStringField(field.attribute, field.operator, field.value, nsplaceholder);
+                // Ensure we're using filters altogether, e.g., with an <ogc:Or> wrapper if necessary
+                if (fieldFilter) {
+                    arr.push(`<ogc:Or>${fieldFilter}</ogc:Or>`); // wrapping in <ogc:Or> to ensure multiple colors parse correctly
+                }
                 break;
             case "boolean":
                 fieldFilter = ogcBooleanField(field.attribute, field.operator, field.value, nsplaceholder);
@@ -535,6 +539,8 @@ export const processOGCFilterFields = function(group, objFilter, nsplaceholder) 
         }, []);
 
         return filter.join("");
+        // Return the combined filter joining with necessary logic if multiple exist
+        // return filter.length > 1 ? `<ogc:And>${filter.join("")}</ogc:And>` : filter[0];
     }
     return "";
 };
@@ -1089,11 +1095,11 @@ export const processCQLSimpleFilterField = function(field) {
         //     strFilter = `<ogc:Or>${strFilter}</ogc:Or>`;
         // }
         // Converting simple QGIS filter fields to CQL
-        if (field.operator === "=") {
-            strFilter = field.attribute + " = '" + field.values + "'";
-        } else {
-            strFilter = FilterUtils.cqlStringField(field.attribute, field.operator, field.values);
-        }
+        // if (field.operator === "=") {
+        //     strFilter = field.attribute + " = '" + field.values + "'";
+        // } else {
+        //     strFilter = FilterUtils.cqlStringField(field.attribute, field.operator, field.values);
+        // }
         break;
     case "boolean":
         strFilter = FilterUtils.cqlBooleanField(field.attribute, field.operator, field.values);
