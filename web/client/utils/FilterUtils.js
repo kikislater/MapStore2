@@ -1085,15 +1085,15 @@ export const processCQLSimpleFilterField = function(field) {
     case "string":
         strFilter = FilterUtils.cqlStringField(field.attribute, field.operator, field.values);
         // Wrap it in an <ogc:Or> if necessary
-        if (strFilter) {
-            strFilter = `<ogc:Or>${strFilter}</ogc:Or>`;
-        }
-        // Converting simple QGIS filter fields to CQL
-        // if (field.operator === "=") {
-        //     strFilter = field.attribute + " = '" + field.values + "'";
-        // } else {
-        //     strFilter = FilterUtils.cqlStringField(field.attribute, field.operator, field.values);
+        // if (strFilter) {
+        //     strFilter = `<ogc:Or>${strFilter}</ogc:Or>`;
         // }
+        // Converting simple QGIS filter fields to CQL
+        if (field.operator === "=") {
+            strFilter = field.attribute + " = '" + field.values + "'";
+        } else {
+            strFilter = FilterUtils.cqlStringField(field.attribute, field.operator, field.values);
+        }
         break;
     case "boolean":
         strFilter = FilterUtils.cqlBooleanField(field.attribute, field.operator, field.values);
