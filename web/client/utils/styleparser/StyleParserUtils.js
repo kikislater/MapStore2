@@ -924,3 +924,28 @@ export const getCachedImageById = (symbolizer) => {
     const id = getImageIdFromSymbolizer(symbolizer);
     return imagesCache[id] || {};
 };
+
+export const convertSLDToCSSWithFilters = (geoStylerStyle) => {
+    const { rules = [] } = geoStylerStyle || {};
+    let css = '';
+
+    rules.forEach((rule) => {
+        const filter = rule.filter
+            ? `[data-property="${rule.filter[1]}"][data-value="${rule.filter[2]}"]`
+            : ''; // Utilisation de data-* pour filtrer dynamiquement
+
+        (rule.symbolizers || []).forEach((symbolizer) => {
+            if (symbolizer.kind === 'Fill' || symbolizer.kind === 'Polygon') {
+                css += `
+                    .map-feature${filter} {
+                        fill: ${symbolizer.color || 'transparent'};
+                        stroke: ${symbolizer.strokeColor || 'none'};
+                        stroke-width: ${symbolizer.strokeWidth || 1}px;
+                    }
+                `;
+            }
+        });
+    });
+
+    return css;
+};
