@@ -13,6 +13,12 @@ import { connect } from 'react-redux';
 import { branch, compose, lifecycle, toClass } from 'recompose';
 import { createSelector } from 'reselect';
 
+import { convertSLDToCSSWithFilters } from '../utils/StyleParserUtils';
+const cssStyles = convertSLDToCSSWithFilters(geoStylerStyle);
+const styleElement = document.createElement('style');
+styleElement.innerHTML = cssStyles;
+document.head.appendChild(styleElement);
+
 import { updateSettingsParams } from '../actions/layers';
 import { initStyleService, toggleStyleEditor } from '../actions/styleeditor';
 import HTML from '../components/I18N/HTML';
