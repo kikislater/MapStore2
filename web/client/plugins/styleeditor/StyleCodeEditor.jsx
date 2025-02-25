@@ -183,7 +183,7 @@ export function StyleEditor({
             </div>);
     }
 
-    const EditorComponent = editorsProp[editorType] || editors[editorType] || editors.textarea;
+    const EditorComponent = editorsProp[editorType] || editors[editorType] || editors.visual;
 
     return (
         <BorderLayout
@@ -199,10 +199,10 @@ export function StyleEditor({
                                 className: 'no-border',
                                 bsSize: 'xs',
                                 disabled: loading,
-                                active: editorType === 'textarea',
-                                textId: editorType === 'visual'
-                                    ? 'styleeditor.switchToTextareaEditor'
-                                    : 'styleeditor.switchToVisualEditor',
+                                active: editorType === 'visual',
+                                textId: editorType === 'textarea'
+                                    ? 'styleeditor.switchToVisualEditor'
+                                    : 'styleeditor.switchToTextareaEditor',
                                 onClick: () => {
                                     if (loading) {
                                         return null;
